@@ -11,4 +11,7 @@ router.get("/user", user.findAll);
 // 로그인
 router.post("/login", user.login);
 
+// 로그인 토큰체크
+router.post("/token", user.tokenCheck);
+
 exports.router = router;
