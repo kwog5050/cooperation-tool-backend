@@ -39,11 +39,16 @@ const login = (req, callback) => {
 
         let token = SHA512(randomString());
 
-        userModel.createToken(user, token, (err, result) => {
-            if (err) return callback(err, null);
+        if (res.result === "success") {
+            userModel.createToken(user, token, (err, result) => {
+                if (err) return callback(err, null);
 
-            return callback(null, result);
-        })
+                return callback(null, result);
+            })
+        } else {
+            return callback(null, res);
+        }
+
     })
 }
 

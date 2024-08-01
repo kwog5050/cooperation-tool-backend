@@ -20,7 +20,7 @@ const invitationCodeCheck = async (req, callback) => {
                 })
             } else {
                 return callback(null, {
-                    result: "not found",
+                    result: "notFound",
                     msg: "초대코드 없음",
                     data: null
                 })
@@ -73,7 +73,7 @@ const login = async (req, callback) => {
                 } else {
                     //로그인 실패(비밀번호 틀림)
                     return callback(null, {
-                        result: "fall",
+                        result: "fail",
                         msg: "비밀번호 틀림",
                         data: null
                     });
@@ -81,7 +81,7 @@ const login = async (req, callback) => {
             } else {
                 // 조회 실패
                 return callback(null, {
-                    result: "not found",
+                    result: "notFound",
                     msg: "이메일 조회 실패",
                     data: null
                 });
@@ -145,7 +145,7 @@ const tokenCheck = async (req, callback) => {
             } else {
                 // 조회 실패 
                 return callback(null, {
-                    result: "not found",
+                    result: "notFound",
                     msg: "이메일 조회 실패",
                     data: null
                 });
