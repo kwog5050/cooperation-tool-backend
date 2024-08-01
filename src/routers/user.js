@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const user = require("../controllers/userController.js");
 
+// 초대코드 검증
+router.post("/invitationCode", user.invitationCodeCheck);
+
 // 가입
 router.post("/user", user.create);
 
@@ -11,7 +14,7 @@ router.get("/user", user.findAll);
 // 로그인
 router.post("/login", user.login);
 
-// 로그인 토큰체크
+// 토큰 검증
 router.post("/token", user.tokenCheck);
 
 exports.router = router;

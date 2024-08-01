@@ -1,10 +1,39 @@
 const sql = require("../dbConfig");
 
-// 회원가입
-const create = async (userData, callback) => {
+// 초대코드 검증
+const invitationCodeCheck = async (req, callback) => {
     sql.query(
-        "INSERT INTO user (email, password, name, token) VALUES (?, ?, ?, ?)",
-        [userData.email, userData.password, userData.name, null],
+        "SELECT code FROM invitation_code WHERE code = ?",
+        [req.code],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.length) {
+                return callback(null, {
+                    result: "success",
+                    msg: "초대코드 있음",
+                    data: null
+                })
+            } else {
+                return callback(null, {
+                    result: "not found",
+                    msg: "초대코드 없음",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
+// 회원가입
+const create = async (req, callback) => {
+    sql.query(
+        "INSERT INTO user (name, email, password, invitation_code, token) VALUES (?, ?, ?, ?, ?)",
+        [req.name, req.email, req.password, req.invitationCode, null],
         (err, res) => {
             if (err) return callback(err, {
                 result: "error",
@@ -22,10 +51,10 @@ const create = async (userData, callback) => {
 }
 
 // 로그인
-const login = async (userData, callback) => {
+const login = async (req, callback) => {
     sql.query(
         "SELECT email, password FROM user WHERE email = ?",
-        [userData.email, userData.password],
+        [req.email, req.password],
         (err, res) => {
             if (err) return callback(err, {
                 result: "error",
@@ -34,7 +63,7 @@ const login = async (userData, callback) => {
             });
 
             if (res.length) {
-                if (res[0].password === userData.password) {
+                if (res[0].password === req.password) {
                     // 로그인 성공
                     return callback(null, {
                         result: "success",
@@ -52,7 +81,7 @@ const login = async (userData, callback) => {
             } else {
                 // 조회 실패
                 return callback(null, {
-                    result: "not_found",
+                    result: "not found",
                     msg: "이메일 조회 실패",
                     data: null
                 });
@@ -62,10 +91,10 @@ const login = async (userData, callback) => {
 }
 
 // 토큰생성
-const createToken = async (userData, token, callback) => {
+const createToken = async (req, token, callback) => {
     sql.query(
         "UPDATE user SET token = ? WHERE email = ?",
-        [token, userData.email],
+        [token, req.email],
         (err, res) => {
             if (err) return callback(err, {
                 result: "error",
@@ -77,7 +106,7 @@ const createToken = async (userData, token, callback) => {
                 result: "success",
                 msg: null,
                 data: {
-                    email: userData.email,
+                    email: req.email,
                     token: token
                 }
             });
@@ -86,10 +115,10 @@ const createToken = async (userData, token, callback) => {
 }
 
 // 유저 토큰 체크
-const tokenCheck = async (userData, callback) => {
+const tokenCheck = async (req, callback) => {
     sql.query(
         "SELECT token FROM user WHERE email = ?",
-        [userData.email],
+        [req.email],
         (err, res) => {
             if (err) return callback(err, {
                 result: "error",
@@ -98,7 +127,7 @@ const tokenCheck = async (userData, callback) => {
             });
 
             if (res.length) {
-                if (res[0].token === userData.token) {
+                if (res[0].token === req.token) {
                     // 토큰 일치함
                     return callback(null, {
                         result: "success",
@@ -116,7 +145,7 @@ const tokenCheck = async (userData, callback) => {
             } else {
                 // 조회 실패 
                 return callback(null, {
-                    result: "not_found",
+                    result: "not found",
                     msg: "이메일 조회 실패",
                     data: null
                 });
@@ -145,4 +174,4 @@ const findAll = async (callback) => {
     )
 }
 
-module.exports = { create, login, createToken, tokenCheck, findAll };
+module.exports = { invitationCodeCheck, create, login, createToken, tokenCheck, findAll };
