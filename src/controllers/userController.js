@@ -66,4 +66,15 @@ const findAll = (req, res) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll }
+// 로그인
+const modifyPassword = (req, res) => {
+    if (!req.body) return res.status(400).send({ nsg: "요청 값 없음" });
+
+    userService.modifyPassword(req.body, (err, data) => {
+        if (err) return res.status(500).send(data);
+
+        return res.send(data);
+    })
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll, modifyPassword }

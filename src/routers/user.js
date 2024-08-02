@@ -20,4 +20,7 @@ router.post("/login", user.login);
 // 토큰 검증
 router.post("/token", user.tokenCheck);
 
+// 비밀번호 수정
+router.post("/modifyPassword", user.modifyPassword);
+
 exports.router = router;

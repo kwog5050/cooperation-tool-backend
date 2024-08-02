@@ -205,4 +205,25 @@ const findAll = async (callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, createToken, tokenCheck, findAll };
+// 비밀번호 수정
+const modifyPassword = async (req, callback) => {
+    sql.query(
+        "UPDATE user SET password = ? WHERE email = ?",
+        [req.newPassword, req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            return callback(null, {
+                result: "success",
+                msg: "비밀번호 변경완료",
+                data: null
+            })
+        }
+    )
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, createToken, tokenCheck, findAll, modifyPassword };

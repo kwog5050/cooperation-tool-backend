@@ -49,10 +49,10 @@ const login = (req, callback) => {
         let token = SHA512(randomString());
 
         if (res.result === "success") {
-            userModel.createToken(user, token, (err, result) => {
+            userModel.createToken(user, token, (err, res) => {
                 if (err) return callback(err, null);
 
-                return callback(null, result);
+                return callback(null, res);
             })
         } else {
             return callback(null, res);
@@ -84,4 +84,27 @@ const findAll = (callback) => {
     });
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll };
+// 비밀번호 수정
+const modifyPassword = (req, callback) => {
+    const user = {
+        email: req.email,
+        password: SHA512(req.password),
+        newPassword: SHA512(req.newPassword)
+    }
+
+    userModel.login(user, (err, res) => {
+        if (err) return callback(err, null);
+
+        if (res.result === "success") {
+            userModel.modifyPassword(user, (err, res) => {
+                if (err) return callback(err, null);
+
+                return callback(null, res);
+            })
+        } else {
+            return callback(null, res);
+        }
+    })
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll, modifyPassword };
