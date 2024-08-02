@@ -29,6 +29,37 @@ const invitationCodeCheck = async (req, callback) => {
     )
 }
 
+// 이메일 중복 검사
+const emailOverlapCheck = async (req, callback) => {
+    sql.query(
+        "SELCET email FROM user WHERE email = ?",
+        [req.eamil],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.length) {
+                if (res[0].eamil === req.eamil) {
+                    return callback(null, {
+                        result: "fail",
+                        msg: "이메일 중복",
+                        data: null
+                    })
+                }
+            } else {
+                return callback(null, {
+                    result: "success",
+                    msg: "이메일 중복없음",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
 // 회원가입
 const create = async (req, callback) => {
     sql.query(
@@ -174,4 +205,4 @@ const findAll = async (callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, create, login, createToken, tokenCheck, findAll };
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, createToken, tokenCheck, findAll };

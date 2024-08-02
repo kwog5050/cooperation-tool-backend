@@ -12,6 +12,17 @@ const invitationCodeCheck = (req, res) => {
     })
 }
 
+// 이메일 중복 검사
+const emailOverlapCheck = (req, res) => {
+    if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
+
+    userService.emailOverlapCheck(req.body, (err, data) => {
+        if (err) return res.status(500).send(data);
+
+        return res.send(data);
+    })
+}
+
 // 회원가입
 const create = (req, res) => {
     if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
@@ -55,4 +66,4 @@ const findAll = (req, res) => {
     })
 }
 
-module.exports = { invitationCodeCheck, create, login, tokenCheck, findAll }
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll }

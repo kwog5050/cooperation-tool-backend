@@ -5,6 +5,9 @@ const user = require("../controllers/userController.js");
 // 초대코드 검증
 router.post("/invitationCode", user.invitationCodeCheck);
 
+// 이메일 중복 검사
+router.post("/email", user.emailOverlapCheck);
+
 // 가입
 router.post("/user", user.create);
 

@@ -11,6 +11,15 @@ const invitationCodeCheck = (req, callback) => {
     })
 }
 
+// 이메일 중복 검사
+const emailOverlapCheck = (req, callback) => {
+    userModel.emailOverlapCheck(req, (err, res) => {
+        if (err) return callback(err, null);
+
+        return callback(null, res);
+    })
+}
+
 // 회원가입
 const create = (req, callback) => {
     const user = {
@@ -75,4 +84,4 @@ const findAll = (callback) => {
     });
 }
 
-module.exports = { invitationCodeCheck, create, login, tokenCheck, findAll };
+module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll };
