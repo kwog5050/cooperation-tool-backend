@@ -32,8 +32,8 @@ const invitationCodeCheck = async (req, callback) => {
 // 이메일 중복 검사
 const emailOverlapCheck = async (req, callback) => {
     sql.query(
-        "SELCET email FROM user WHERE email = ?",
-        [req.eamil],
+        "SELECT email FROM user WHERE email = ?",
+        [req.email],
         (err, res) => {
             if (err) return callback(err, {
                 result: "error",
