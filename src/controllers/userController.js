@@ -24,7 +24,7 @@ const emailOverlapCheck = (req, res) => {
 }
 
 // 회원가입
-const create = (req, res) => {
+const createUser = (req, res) => {
     if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
 
     userService.create(req.body, (err, data) => {
@@ -77,4 +77,14 @@ const modifyPassword = (req, res) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll, modifyPassword }
+// 유저 상태메시지 조회
+const findStatusMessage = (req, res) => {
+    userService.findStatusMessage(req.body, (err, data) => {
+        if (err) {
+            return res.status(500).send(data);
+        }
+        return res.send(data);
+    })
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, findAll, modifyPassword, findStatusMessage }

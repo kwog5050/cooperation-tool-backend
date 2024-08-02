@@ -21,7 +21,7 @@ const emailOverlapCheck = (req, callback) => {
 }
 
 // 회원가입
-const create = (req, callback) => {
+const createUser = (req, callback) => {
     const user = {
         name: req.name,
         email: req.email,
@@ -107,4 +107,13 @@ const modifyPassword = (req, callback) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, tokenCheck, findAll, modifyPassword };
+// 상태메시지 조회
+const findStatusMessage = (req, callback) => {
+    userModel.findStatusMessage(req, (err, res) => {
+        if (err) return callback(err, null);
+
+        return callback(null, res);
+    })
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, findAll, modifyPassword, findStatusMessage };

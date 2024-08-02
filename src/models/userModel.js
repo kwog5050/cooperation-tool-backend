@@ -61,7 +61,7 @@ const emailOverlapCheck = async (req, callback) => {
 }
 
 // 회원가입
-const create = async (req, callback) => {
+const createUser = async (req, callback) => {
     sql.query(
         "INSERT INTO user (name, email, password, invitation_code, token) VALUES (?, ?, ?, ?, ?)",
         [req.name, req.email, req.password, req.invitationCode, null],
@@ -226,4 +226,33 @@ const modifyPassword = async (req, callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, create, login, createToken, tokenCheck, findAll, modifyPassword };
+// 유저 상태메시지 조회
+const findStatusMessage = async (req, callback) => {
+    sql.query(
+        "SELECT status_message FROM user WHERE email = ?",
+        [req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.length) {
+                return callback(null, {
+                    result: "success",
+                    msg: "상태메시지 조회 성공",
+                    data: res
+                })
+            } else {
+                return callback(null, {
+                    result: "fail",
+                    msg: "상태메시지 조회 실패",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, findAll, modifyPassword, findStatusMessage };
