@@ -11,8 +11,17 @@ const invitationCodeCheck = (req, callback) => {
     })
 }
 
+// 이메일 중복 검사
+const emailOverlapCheck = (req, callback) => {
+    userModel.emailOverlapCheck(req, (err, res) => {
+        if (err) return callback(err, null);
+
+        return callback(null, res);
+    })
+}
+
 // 회원가입
-const create = (req, callback) => {
+const createUser = (req, callback) => {
     const user = {
         name: req.name,
         email: req.email,
@@ -40,10 +49,10 @@ const login = (req, callback) => {
         let token = SHA512(randomString());
 
         if (res.result === "success") {
-            userModel.createToken(user, token, (err, result) => {
+            userModel.createToken(user, token, (err, res) => {
                 if (err) return callback(err, null);
 
-                return callback(null, result);
+                return callback(null, res);
             })
         } else {
             return callback(null, res);
@@ -75,4 +84,36 @@ const findAll = (callback) => {
     });
 }
 
-module.exports = { invitationCodeCheck, create, login, tokenCheck, findAll };
+// 비밀번호 수정
+const modifyPassword = (req, callback) => {
+    const user = {
+        email: req.email,
+        password: SHA512(req.password),
+        newPassword: SHA512(req.newPassword)
+    }
+
+    userModel.login(user, (err, res) => {
+        if (err) return callback(err, null);
+
+        if (res.result === "success") {
+            userModel.modifyPassword(user, (err, res) => {
+                if (err) return callback(err, null);
+
+                return callback(null, res);
+            })
+        } else {
+            return callback(null, res);
+        }
+    })
+}
+
+// 상태메시지 조회
+const findStatusMessage = (req, callback) => {
+    userModel.findStatusMessage(req, (err, res) => {
+        if (err) return callback(err, null);
+
+        return callback(null, res);
+    })
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, findAll, modifyPassword, findStatusMessage };

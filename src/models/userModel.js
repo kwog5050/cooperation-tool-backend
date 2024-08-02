@@ -29,8 +29,39 @@ const invitationCodeCheck = async (req, callback) => {
     )
 }
 
+// 이메일 중복 검사
+const emailOverlapCheck = async (req, callback) => {
+    sql.query(
+        "SELECT email FROM user WHERE email = ?",
+        [req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.length) {
+                if (res[0].eamil === req.eamil) {
+                    return callback(null, {
+                        result: "fail",
+                        msg: "이메일 중복",
+                        data: null
+                    })
+                }
+            } else {
+                return callback(null, {
+                    result: "success",
+                    msg: "이메일 중복없음",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
 // 회원가입
-const create = async (req, callback) => {
+const createUser = async (req, callback) => {
     sql.query(
         "INSERT INTO user (name, email, password, invitation_code, token) VALUES (?, ?, ?, ?, ?)",
         [req.name, req.email, req.password, req.invitationCode, null],
@@ -174,4 +205,54 @@ const findAll = async (callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, create, login, createToken, tokenCheck, findAll };
+// 비밀번호 수정
+const modifyPassword = async (req, callback) => {
+    sql.query(
+        "UPDATE user SET password = ? WHERE email = ?",
+        [req.newPassword, req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            return callback(null, {
+                result: "success",
+                msg: "비밀번호 변경완료",
+                data: null
+            })
+        }
+    )
+}
+
+// 유저 상태메시지 조회
+const findStatusMessage = async (req, callback) => {
+    sql.query(
+        "SELECT status_message FROM user WHERE email = ?",
+        [req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.length) {
+                return callback(null, {
+                    result: "success",
+                    msg: "상태메시지 조회 성공",
+                    data: res
+                })
+            } else {
+                return callback(null, {
+                    result: "fail",
+                    msg: "상태메시지 조회 실패",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, findAll, modifyPassword, findStatusMessage };
