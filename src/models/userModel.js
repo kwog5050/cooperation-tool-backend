@@ -186,7 +186,7 @@ const tokenCheck = async (req, callback) => {
 }
 
 // 유저 전체 조회
-const findAll = async (callback) => {
+const getUserAll = async (callback) => {
     sql.query(
         "SELECT * FROM user",
         (err, res) => {
@@ -255,4 +255,4 @@ const findStatusMessage = async (req, callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, findAll, modifyPassword, findStatusMessage };
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, getUserAll, modifyPassword, findStatusMessage };

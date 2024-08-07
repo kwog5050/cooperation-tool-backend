@@ -1,3 +1,4 @@
+// 랜덤 문자열 생성
 exports.randomString = () => {
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     let result = '';

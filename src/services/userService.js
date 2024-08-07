@@ -22,14 +22,14 @@ const emailOverlapCheck = (req, callback) => {
 
 // 회원가입
 const createUser = (req, callback) => {
-    const user = {
+    const data = {
         name: req.name,
         email: req.email,
         password: SHA512(req.password),
         invitationCode: req.invitationCode
     }
 
-    userModel.create(user, (err, res) => {
+    userModel.createUser(data, (err, res) => {
         if (err) return callback(err, null);
 
         return callback(null, res);
@@ -38,18 +38,18 @@ const createUser = (req, callback) => {
 
 // 로그인
 const login = (req, callback) => {
-    const user = {
+    const data = {
         email: req.email,
         password: SHA512(req.password)
     }
 
-    userModel.login(user, (err, res) => {
+    userModel.login(data, (err, res) => {
         if (err) return callback(err, null);
 
         let token = SHA512(randomString());
 
         if (res.result === "success") {
-            userModel.createToken(user, token, (err, res) => {
+            userModel.createToken(data, token, (err, res) => {
                 if (err) return callback(err, null);
 
                 return callback(null, res);
@@ -63,12 +63,12 @@ const login = (req, callback) => {
 
 // 토큰 검증
 const tokenCheck = (req, callback) => {
-    const user = {
+    const data = {
         email: req.email,
         token: req.token
     }
 
-    userModel.tokenCheck(user, (err, res) => {
+    userModel.tokenCheck(data, (err, res) => {
         if (err) return callback(err, null);
 
         return callback(null, res);
@@ -76,8 +76,8 @@ const tokenCheck = (req, callback) => {
 }
 
 // 유저 전체 조회
-const findAll = (callback) => {
-    userModel.findAll((err, res) => {
+const getUserAll = (callback) => {
+    userModel.getUserAll((err, res) => {
         if (err) return callback(err, null);
 
         return callback(null, res);
@@ -86,24 +86,15 @@ const findAll = (callback) => {
 
 // 비밀번호 수정
 const modifyPassword = (req, callback) => {
-    const user = {
+    const data = {
         email: req.email,
-        password: SHA512(req.password),
         newPassword: SHA512(req.newPassword)
     }
 
-    userModel.login(user, (err, res) => {
+    userModel.modifyPassword(data, (err, res) => {
         if (err) return callback(err, null);
 
-        if (res.result === "success") {
-            userModel.modifyPassword(user, (err, res) => {
-                if (err) return callback(err, null);
-
-                return callback(null, res);
-            })
-        } else {
-            return callback(null, res);
-        }
+        return callback(null, res);
     })
 }
 
@@ -116,4 +107,4 @@ const findStatusMessage = (req, callback) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, findAll, modifyPassword, findStatusMessage };
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, getUserAll, modifyPassword, findStatusMessage };

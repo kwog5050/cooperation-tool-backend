@@ -9,10 +9,10 @@ router.post("/invitationCode", user.invitationCodeCheck);
 router.post("/email", user.emailOverlapCheck);
 
 // 가입
-router.post("/user", user.createUser);
+router.post("/createUser", user.createUser);
 
 // 조회
-router.get("/user", user.findAll);
+router.get("/getUserAll", user.getUserAll);
 
 // 로그인
 router.post("/login", user.login);
