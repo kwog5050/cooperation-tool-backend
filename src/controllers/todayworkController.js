@@ -22,4 +22,15 @@ const getTodaywork = (req, res) => {
     })
 }
 
-module.exports = { createTodaywork, getTodaywork }
+// 오늘업무 삭제
+const deleteTodaywork = (req, res) => {
+    if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
+
+    todayworkService.deleteTodaywork(req.body, (err, data) => {
+        if (err) return res.status(500).send(data);
+
+        return res.send(data);
+    })
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork }

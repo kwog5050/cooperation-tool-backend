@@ -33,4 +33,18 @@ const getTodaywork = (req, callback) => {
     })
 }
 
-module.exports = { createTodaywork, getTodaywork }
+// 오늘업무 삭제
+const deleteTodaywork = (req, callback) => {
+    const data = {
+        id: req.uuid,
+        email: req.email
+    }
+
+    todayworkModel.deleteTodaywork(data, (err, res) => {
+        if (err) return callback(err, null);
+
+        return callback(null, res);
+    })
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork }
