@@ -42,7 +42,7 @@ const emailOverlapCheck = async (req, callback) => {
             })
 
             if (res.length) {
-                if (res[0].eamil === req.eamil) {
+                if (res[0].email === req.email) {
                     return callback(null, {
                         result: "fail",
                         msg: "이메일 중복",
