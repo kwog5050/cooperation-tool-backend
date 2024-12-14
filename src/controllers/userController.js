@@ -6,7 +6,7 @@ const invitationCodeCheck = (req, res) => {
     if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
 
     userService.invitationCodeCheck(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -17,7 +17,7 @@ const emailOverlapCheck = (req, res) => {
     if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
 
     userService.emailOverlapCheck(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -28,7 +28,7 @@ const createUser = (req, res) => {
     if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
 
     userService.createUser(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -39,7 +39,7 @@ const login = (req, res) => {
     if (!req.body) return res.status(400).send({ nsg: "요청 값 없음" });
 
     userService.login(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -50,7 +50,7 @@ const tokenCheck = (req, res) => {
     if (!req.body) return res.status(400).send({ msg: "요청 값 없음" });
 
     userService.tokenCheck(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -60,7 +60,7 @@ const tokenCheck = (req, res) => {
 const getUserAll = (req, res) => {
     userService.getUserAll((err, data) => {
         if (err) {
-            return res.status(500).send(data);
+            return res.send(data);
         }
         return res.send(data);
     })
@@ -71,7 +71,7 @@ const modifyPassword = (req, res) => {
     if (!req.body) return res.status(400).send({ nsg: "요청 값 없음" });
 
     userService.modifyPassword(req.body, (err, data) => {
-        if (err) return res.status(500).send(data);
+        if (err) return res.send(data);
 
         return res.send(data);
     })
@@ -81,7 +81,7 @@ const modifyPassword = (req, res) => {
 const findStatusMessage = (req, res) => {
     userService.findStatusMessage(req.body, (err, data) => {
         if (err) {
-            return res.status(500).send(data);
+            return res.send(data);
         }
         return res.send(data);
     })

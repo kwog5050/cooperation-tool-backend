@@ -15,7 +15,7 @@ const createTodaywork = (req, callback) => {
     }
 
     todayworkModel.createTodaywork(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })
@@ -28,7 +28,7 @@ const getTodaywork = (req, callback) => {
     }
 
     todayworkModel.getTodaywork(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         const resCopy = {
             result: res.result,
@@ -43,7 +43,6 @@ const getTodaywork = (req, callback) => {
                     resCopy.data.push(el);
                 }
             });
-
         } else {
             // 날짜 정보 안날라오면 타임라인에서 요청한거니 당일 작성한거 응답
             const todayDate = new Date();
@@ -73,4 +72,22 @@ const getTodaywork = (req, callback) => {
     })
 }
 
-module.exports = { createTodaywork, getTodaywork }
+// 오늘업무 삭제
+const deleteTodaywork = (req, callback) => {
+    const data = {
+        writeId: req.writeId,
+        id: req.id
+    }
+
+    console.log(req);
+
+    todayworkModel.deleteTodaywork(data, (err, res) => {
+        if (err) return callback(err, res);
+
+        console.log(res);
+
+        return callback(null, res);
+    })
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork }

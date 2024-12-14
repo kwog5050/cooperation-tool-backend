@@ -5,7 +5,7 @@ const { randomString } = require("../utils/randomString");
 // 초대코드 검증
 const invitationCodeCheck = (req, callback) => {
     userModel.invitationCodeCheck(req, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })
@@ -14,7 +14,7 @@ const invitationCodeCheck = (req, callback) => {
 // 이메일 중복 검사
 const emailOverlapCheck = (req, callback) => {
     userModel.emailOverlapCheck(req, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })
@@ -30,7 +30,7 @@ const createUser = (req, callback) => {
     }
 
     userModel.createUser(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     });
@@ -44,13 +44,13 @@ const login = (req, callback) => {
     }
 
     userModel.login(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         let token = SHA512(randomString());
 
         if (res.result === "success") {
             userModel.createToken(data, token, (err, res) => {
-                if (err) return callback(err, null);
+                if (err) return callback(err, res);
 
                 return callback(null, res);
             })
@@ -69,7 +69,7 @@ const tokenCheck = (req, callback) => {
     }
 
     userModel.tokenCheck(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })
@@ -78,7 +78,7 @@ const tokenCheck = (req, callback) => {
 // 유저 전체 조회
 const getUserAll = (callback) => {
     userModel.getUserAll((err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     });
@@ -92,7 +92,7 @@ const modifyPassword = (req, callback) => {
     }
 
     userModel.modifyPassword(data, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })
@@ -101,7 +101,7 @@ const modifyPassword = (req, callback) => {
 // 상태메시지 조회
 const findStatusMessage = (req, callback) => {
     userModel.findStatusMessage(req, (err, res) => {
-        if (err) return callback(err, null);
+        if (err) return callback(err, res);
 
         return callback(null, res);
     })

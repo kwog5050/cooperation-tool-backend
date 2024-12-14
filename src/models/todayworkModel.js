@@ -50,4 +50,33 @@ const getTodaywork = async (req, callback) => {
     )
 }
 
-module.exports = { createTodaywork, getTodaywork }
+// 오늘업무 삭제
+const deleteTodaywork = async (req, callback) => {
+    sql.query(
+        "DELETE FROM todaywork WHERE write_id = ? AND id = ?",
+        [req.writeId, req.id],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            })
+
+            if (res.affectedRows > 0) {
+                return callback(null, {
+                    result: "success",
+                    msg: "오늘업무 삭제 성공",
+                    data: res
+                })
+            } else {
+                return callback(null, {
+                    result: "fail",
+                    msg: "삭제할 오늘업무 없음",
+                    data: null
+                })
+            }
+        }
+    )
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork }
