@@ -79,4 +79,24 @@ const deleteTodaywork = async (req, callback) => {
     )
 }
 
-module.exports = { createTodaywork, getTodaywork, deleteTodaywork }
+const modifyTodaywork = async (req, callback) => {
+    sql.query(
+        "UPDATE todaywork SET content = ? WHERE write_id = ? AND id = ?",
+        [req.content, req.writeId, req.id],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                mag: err.message,
+                data: null
+            })
+
+            return callback(null, {
+                result: "success",
+                msg: "오늘업무 수정 성공",
+                data: res
+            })
+        }
+    )
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork, modifyTodaywork }

@@ -11,4 +11,7 @@ router.post("/getTodaywork", todaywork.getTodaywork);
 // 오늘업무 삭제
 router.post("/deleteTodaywork", todaywork.deleteTodaywork);
 
+// 오늘업무 수정
+router.post("/modifyTodaywork", todaywork.modifyTodaywork);
+
 exports.router = router;

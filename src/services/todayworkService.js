@@ -36,39 +36,43 @@ const getTodaywork = (req, callback) => {
             data: []
         };
 
-        if (req.calendarDate) {
-            // 조회 날짜 비교해서 일치하는 해당 날짜만 글만 응답
-            res.data.forEach(el => {
-                if (el.date === req.calendarDate) {
-                    resCopy.data.push(el);
-                }
-            });
-        } else {
-            // 날짜 정보 안날라오면 타임라인에서 요청한거니 당일 작성한거 응답
-            const todayDate = new Date();
-
-            const year = todayDate.getFullYear();
-            const month = String(todayDate.getMonth() + 1).padStart(2, '0');
-            const day = String(todayDate.getDate()).padStart(2, '0');
-
-            const formatDate = `${year}-${month}-${day}`;
-
-            res.data.forEach((el, index) => {
-                const writeDate = el.write_time.split(' ')[0];
-                const writeTime = el.write_time.split(' ')[1];
-
-                if (formatDate === writeDate) {
-                    resCopy.data.push(el);
-                    if (Number(writeTime.slice(0, 2)) > 11) {
-                        resCopy.data[index].write_time = writeTime.slice(0, 5) + " PM"
-                    } else {
-                        resCopy.data[index].write_time = writeTime.slice(0, 5) + " AM"
+        if (res.data !== null) {
+            if (req.calendarDate) {
+                // 조회 날짜 비교해서 일치하는 해당 날짜만 글만 응답
+                res.data.forEach(el => {
+                    if (el.date === req.calendarDate) {
+                        resCopy.data.push(el);
                     }
-                }
-            });
+                });
+            } else {
+                // 날짜 정보 안날라오면 타임라인에서 요청한거니 당일 작성한거 응답
+                const todayDate = new Date();
+
+                const year = todayDate.getFullYear();
+                const month = String(todayDate.getMonth() + 1).padStart(2, '0');
+                const day = String(todayDate.getDate()).padStart(2, '0');
+
+                const formatDate = `${year}-${month}-${day}`;
+
+                res.data.forEach((el, index) => {
+                    const writeDate = el.write_time.split(' ')[0];
+                    const writeTime = el.write_time.split(' ')[1];
+
+                    if (formatDate === writeDate) {
+                        resCopy.data.push(el);
+                        if (Number(writeTime.slice(0, 2)) > 11) {
+                            resCopy.data[index].write_time = writeTime.slice(0, 5) + " PM"
+                        } else {
+                            resCopy.data[index].write_time = writeTime.slice(0, 5) + " AM"
+                        }
+                    }
+                });
+            }
+
+            return callback(null, resCopy);
         }
 
-        return callback(null, resCopy);
+        return callback(null, res);
     })
 }
 
@@ -79,15 +83,26 @@ const deleteTodaywork = (req, callback) => {
         id: req.id
     }
 
-    console.log(req);
-
     todayworkModel.deleteTodaywork(data, (err, res) => {
         if (err) return callback(err, res);
-
-        console.log(res);
 
         return callback(null, res);
     })
 }
 
-module.exports = { createTodaywork, getTodaywork, deleteTodaywork }
+// 오늘업무 수정
+const modifyTodaywork = (req, callback) => {
+    const data = {
+        content: req.content,
+        writeId: req.writeId,
+        id: req.id
+    }
+
+    todayworkModel.modifyTodaywork(data, (err, res) => {
+        if (err) return callback(err, res);
+
+        return callback(null, res);
+    })
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork, modifyTodaywork }

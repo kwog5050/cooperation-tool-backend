@@ -34,4 +34,15 @@ const deleteTodaywork = (req, res) => {
     })
 }
 
-module.exports = { createTodaywork, getTodaywork, deleteTodaywork }
+const modifyTodaywork = (req, res) => {
+    if (!req.body) return res.status(400).send({ message: "요청 값 없음" });
+
+
+    todayworkService.modifyTodaywork(req.body, (err, data) => {
+        if (err) return res.send(data);
+
+        return res.send(data);
+    })
+}
+
+module.exports = { createTodaywork, getTodaywork, deleteTodaywork, modifyTodaywork }
