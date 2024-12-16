@@ -185,6 +185,27 @@ const tokenCheck = async (req, callback) => {
     )
 }
 
+// 유저 조회
+const getUser = async (req, callback) => {
+    sql.query(
+        "SELECT * FROM user WHERE email = ?",
+        [req.email],
+        (err, res) => {
+            if (err) return callback(err, {
+                result: "error",
+                msg: err.message,
+                data: null
+            });
+
+            return callback(null, {
+                result: "success",
+                msg: null,
+                data: res
+            });
+        }
+    )
+}
+
 // 유저 전체 조회
 const getUserAll = async (callback) => {
     sql.query(
@@ -255,4 +276,4 @@ const findStatusMessage = async (req, callback) => {
     )
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, getUserAll, modifyPassword, findStatusMessage };
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, createToken, tokenCheck, getUser, getUserAll, modifyPassword, findStatusMessage };

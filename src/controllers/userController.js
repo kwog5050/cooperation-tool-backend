@@ -56,12 +56,22 @@ const tokenCheck = (req, res) => {
     })
 }
 
+// 유저 조회
+const getUser = (req, res) => {
+    if (!req.body) return res.status(400).send({ msg: "요청 값 없음" });
+
+    userService.getUser(req.body, (err, data) => {
+        if (err) return res.send(data);
+
+        return res.send(data);
+    })
+}
+
 // 유저 전체 조회
 const getUserAll = (req, res) => {
     userService.getUserAll((err, data) => {
-        if (err) {
-            return res.send(data);
-        }
+        if (err) return res.send(data);
+
         return res.send(data);
     })
 }
@@ -87,4 +97,4 @@ const findStatusMessage = (req, res) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, getUserAll, modifyPassword, findStatusMessage }
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, getUser, getUserAll, modifyPassword, findStatusMessage }

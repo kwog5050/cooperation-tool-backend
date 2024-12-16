@@ -11,7 +11,10 @@ router.post("/email", user.emailOverlapCheck);
 // 가입
 router.post("/createUser", user.createUser);
 
-// 조회
+// 유저 조회
+router.post("/getUser", user.getUser);
+
+// 유저 전체 조회
 router.get("/getUserAll", user.getUserAll);
 
 // 로그인

@@ -75,6 +75,18 @@ const tokenCheck = (req, callback) => {
     })
 }
 
+// 유저 조회
+const getUser = (req, callback) => {
+    const data = {
+        email: req.email
+    }
+    userModel.getUser(data, (err, res) => {
+        if (err) return callback(err, res);
+
+        return callback(null, res);
+    });
+}
+
 // 유저 전체 조회
 const getUserAll = (callback) => {
     userModel.getUserAll((err, res) => {
@@ -107,4 +119,4 @@ const findStatusMessage = (req, callback) => {
     })
 }
 
-module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, getUserAll, modifyPassword, findStatusMessage };
+module.exports = { invitationCodeCheck, emailOverlapCheck, createUser, login, tokenCheck, getUser, getUserAll, modifyPassword, findStatusMessage };
